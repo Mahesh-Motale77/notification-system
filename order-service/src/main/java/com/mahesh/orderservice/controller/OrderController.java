@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class OrderController {
 
-    private OrderService orderService;
+    private final OrderService orderService;
 
     @PostMapping(value = "/create")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody @Validated OrderRequest orderRequest){

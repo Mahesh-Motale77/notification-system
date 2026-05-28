@@ -16,8 +16,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    private OrderRepository orderRepository;
-
+    private final OrderRepository orderRepository;
 
     @Override
     public OrderResponse createOrder(OrderRequest request) {
