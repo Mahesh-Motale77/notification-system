@@ -9,7 +9,7 @@ import org.apache.kafka.common.protocol.types.Field;
 @Builder
 @ToString
 public class OrderRequest {
-    private Long userId;
+    private String userId;
     private String items;
     private Double amount;
 }

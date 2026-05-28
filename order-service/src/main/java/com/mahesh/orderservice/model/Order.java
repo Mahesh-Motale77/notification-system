@@ -7,6 +7,8 @@ import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "orders")
 @Data
@@ -19,17 +21,19 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    private String orderId;
+    private String userId;
     private String items;
     private Double amount;
 
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
     @CreationTimestamp
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
     public enum OrderStatus{
         CREATED, CONFIRMED, SHIPPED, DELIVERED

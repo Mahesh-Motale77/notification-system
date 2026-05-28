@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,6 +25,7 @@ public class OrderServiceImpl implements OrderService {
 
         // creating a new order with status as CREATED
         Order order = Order.builder()
+                .orderId("ORD"+System.currentTimeMillis())
                 .userId(request.getUserId())
                 .orderStatus(Order.OrderStatus.CREATED)
                 .amount(request.getAmount())
@@ -39,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
         return OrderResponse.builder()
                 .statusCode("200")
                 .statusMessage("Order created successfully!")
-                .requestUUID("")
+                .requestUUID(MDC.get("UUID"))
                 .data(order)
                 .build();
     }
