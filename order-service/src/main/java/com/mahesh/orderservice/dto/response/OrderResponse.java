@@ -1,6 +1,7 @@
 package com.mahesh.orderservice.dto.response;
 
 import com.mahesh.orderservice.model.Order;
+import com.mahesh.orderservice.vo.OrderVo;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -13,12 +14,6 @@ public class OrderResponse {
     private String statusMessage;
     private String requestUUID;
 
-    private Order data;
+    private OrderVo data;
 
-    public class OrderData{
-        private Long userId;
-        private String items;
-        private Double amount;
-        private Order.OrderStatus orderStatus;
-    }
 }
