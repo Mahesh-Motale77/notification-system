@@ -69,17 +69,32 @@ public class NotificationServiceImpl implements NotificationService {
             throw new RuntimeException(e);
         }
 
-        NotificationDetails notificationDetails = NotificationDetails.builder()
-                .userId(eventRequest.getUserId())
-                .orderId(eventRequest.getOrderId())
-                .notificationType(NotificationDetails.NotificationType.valueOf(eventRequest.getOrderStatus()))
-                .notificationStatus(NotificationDetails.NotificationStatus.PENDING)
-                .channel(channel)
-                .retryCount(0)
-                .payload(jsonRequest)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build();
+        NotificationDetails notificationDetails = notificationDetailsRepository.findByOrderId(eventRequest.getOrderId())
+                .map(existing ->
+                        {
+                            existing.setNotificationStatus(NotificationDetails.NotificationStatus.PENDING);
+                            existing.setRetryCount(0);
+                            existing.setErrorMessage(null);
+                            existing.setUpdatedAt(LocalDateTime.now());
+                            log.info("Reusing existing notification details | orderId : {}",
+                                    eventRequest.getOrderId());
+                            return existing;
+                        })
+                .orElseGet(() -> {
+                            log.info("Creating new notification entry | orderId : {}", eventRequest.getOrderId());
+                            return NotificationDetails.builder()
+                                    .userId(eventRequest.getUserId())
+                                    .orderId(eventRequest.getOrderId())
+                                    .notificationType(NotificationDetails.NotificationType.valueOf(eventRequest.getOrderStatus()))
+                                    .notificationStatus(NotificationDetails.NotificationStatus.PENDING)
+                                    .channel(channel)
+                                    .retryCount(0)
+                                    .payload(jsonRequest)
+                                    .createdAt(LocalDateTime.now())
+                                    .updatedAt(LocalDateTime.now())
+                                    .build();
+                        }
+                );
 
         NotificationDetails savedNotificationDetails = notificationDetailsRepository.save(notificationDetails);
         log.info("Inside NotificationServiceImpl-->  sendMailAndSaveDetails() : savedNotificationDetails : {}", savedNotificationDetails);
