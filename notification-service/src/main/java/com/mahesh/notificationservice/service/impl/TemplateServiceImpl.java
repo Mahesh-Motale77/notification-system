@@ -1,6 +1,6 @@
 package com.mahesh.notificationservice.service.impl;
 
-import com.mahesh.notificationservice.dto.request.EventRequest;
+import com.mahesh.notificationservice.dto.EventRequest;
 import com.mahesh.notificationservice.model.NotificationDetails;
 import com.mahesh.notificationservice.model.NotificationTemplate;
 import com.mahesh.notificationservice.repository.NotificationTemplateRepository;

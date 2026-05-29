@@ -1,6 +1,6 @@
 package com.mahesh.notificationservice.redis;
 
-import com.mahesh.notificationservice.dto.request.EventRequest;
+import com.mahesh.notificationservice.dto.EventRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;

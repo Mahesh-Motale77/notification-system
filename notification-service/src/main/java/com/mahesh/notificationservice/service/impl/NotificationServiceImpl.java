@@ -3,13 +3,13 @@ package com.mahesh.notificationservice.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mahesh.notificationservice.channel.EmailDispacher;
-import com.mahesh.notificationservice.dto.request.EventRequest;
+import com.mahesh.notificationservice.dto.EventRequest;
 import com.mahesh.notificationservice.model.NotificationDetails;
 import com.mahesh.notificationservice.model.NotificationPreferences;
-import com.mahesh.notificationservice.redis.IdempotencyService;
 import com.mahesh.notificationservice.repository.NotificationDetailsRepository;
 import com.mahesh.notificationservice.repository.NotificationPreferencesRepository;
 import com.mahesh.notificationservice.service.NotificationService;
+import com.mahesh.notificationservice.service.RetryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,6 +24,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationPreferencesRepository notificationPreferencesRepository;
     private final NotificationDetailsRepository notificationDetailsRepository;
+    private final RetryService retryService;
     private final EmailDispacher emailDispacher;
     private final ObjectMapper objectMapper;
 
@@ -97,6 +98,11 @@ public class NotificationServiceImpl implements NotificationService {
 
             log.error("Notification failed for userId={} | error={}",
                     eventRequest.getUserId(), e.getMessage());
+
+            // Get existing log and send to retry
+            notificationDetailsRepository.findByOrderId(eventRequest.getOrderId())
+                    .ifPresent(existingNotificationDetails ->
+                            retryService.handleFailure(eventRequest, channel, existingNotificationDetails, e.getMessage()));
         }
     }
 

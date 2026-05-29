@@ -1,7 +1,5 @@
-package com.mahesh.notificationservice.dto.request;
+package com.mahesh.notificationservice.dto;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.*;
 
 import java.time.LocalDateTime;

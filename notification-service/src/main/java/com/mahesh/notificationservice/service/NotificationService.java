@@ -1,6 +1,6 @@
 package com.mahesh.notificationservice.service;
 
-import com.mahesh.notificationservice.dto.request.EventRequest;
+import com.mahesh.notificationservice.dto.EventRequest;
 
 public interface NotificationService {
 

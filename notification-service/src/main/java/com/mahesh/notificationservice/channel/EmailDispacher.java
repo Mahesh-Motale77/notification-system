@@ -1,16 +1,14 @@
 package com.mahesh.notificationservice.channel;
 
-import com.mahesh.notificationservice.dto.request.EventRequest;
+import com.mahesh.notificationservice.dto.EventRequest;
 import com.mahesh.notificationservice.model.NotificationDetails;
 import com.mahesh.notificationservice.service.TemplateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 @RequiredArgsConstructor
@@ -42,6 +40,9 @@ public class EmailDispacher {
 
         log.info("Email Sent for userId {} | orderId : {} | orderStatus : {}", eventRequest.getUserId(),
                 eventRequest.getOrderId(), eventRequest.getOrderStatus());
+
+//      throw new RuntimeException("Simulated email failure for testing DLQ");
+
     }
 
 

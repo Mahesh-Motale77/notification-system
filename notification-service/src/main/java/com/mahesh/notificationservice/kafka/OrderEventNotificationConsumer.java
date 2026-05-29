@@ -1,7 +1,7 @@
 package com.mahesh.notificationservice.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mahesh.notificationservice.dto.request.EventRequest;
+import com.mahesh.notificationservice.dto.EventRequest;
 import com.mahesh.notificationservice.redis.IdempotencyService;
 import com.mahesh.notificationservice.service.NotificationService;
 import lombok.RequiredArgsConstructor;
