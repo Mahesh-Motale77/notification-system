@@ -1,5 +1,7 @@
 package com.mahesh.notificationservice.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mahesh.notificationservice.channel.EmailDispacher;
 import com.mahesh.notificationservice.dto.request.EventRequest;
 import com.mahesh.notificationservice.model.NotificationDetails;
@@ -22,6 +24,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationPreferencesRepository notificationPreferencesRepository;
     private final NotificationDetailsRepository notificationDetailsRepository;
     private final EmailDispacher emailDispacher;
+    private final ObjectMapper objectMapper;
 
     @Override
     public void processForNotification(EventRequest eventRequest) {
@@ -57,6 +60,13 @@ public class NotificationServiceImpl implements NotificationService {
     private void sendMailAndSaveDetails(EventRequest eventRequest, NotificationDetails.Channel channel) {
         log.info("Inside NotificationServiceImpl-->  sendMailAndSaveDetails() : EventRequest : {}", eventRequest);
 
+        String jsonRequest;
+        try {
+            jsonRequest = objectMapper.writeValueAsString(eventRequest);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
         NotificationDetails notificationDetails = NotificationDetails.builder()
                 .userId(eventRequest.getUserId())
                 .orderId(eventRequest.getOrderId())
@@ -64,6 +74,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .notificationStatus(NotificationDetails.NotificationStatus.PENDING)
                 .channel(channel)
                 .retryCount(0)
+                .payload(jsonRequest)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
