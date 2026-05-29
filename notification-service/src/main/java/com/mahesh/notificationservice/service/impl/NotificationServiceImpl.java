@@ -6,6 +6,7 @@ import com.mahesh.notificationservice.channel.EmailDispacher;
 import com.mahesh.notificationservice.dto.request.EventRequest;
 import com.mahesh.notificationservice.model.NotificationDetails;
 import com.mahesh.notificationservice.model.NotificationPreferences;
+import com.mahesh.notificationservice.redis.IdempotencyService;
 import com.mahesh.notificationservice.repository.NotificationDetailsRepository;
 import com.mahesh.notificationservice.repository.NotificationPreferencesRepository;
 import com.mahesh.notificationservice.service.NotificationService;

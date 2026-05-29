@@ -11,7 +11,10 @@
 2. Start Kafka: bin\windows\kafka-server-start.bat config\server.properties
 
 ### Start Redis
-Runs automatically as Windows service.
+Runs automatically as Windows service.Type below commands in cmd
+1. cd "C:\Program Files\Redis"
+2. redis-cli
+3. keys *
 
 ### Start Services
 - order-service: port 8081
