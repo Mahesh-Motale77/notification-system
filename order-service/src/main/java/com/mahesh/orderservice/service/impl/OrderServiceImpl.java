@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = Order.builder()
                 .orderId("ORD"+System.currentTimeMillis())
                 .userId(request.getUserId())
-                .orderStatus(Order.OrderStatus.CREATED)
+                .orderStatus(Order.OrderStatus.ORDER_CREATED)
                 .amount(request.getAmount())
                 .items(request.getItems())
                 .build();

@@ -36,6 +36,6 @@ public class Order {
     private LocalDateTime updatedAt;
 
     public enum OrderStatus{
-        CREATED, CONFIRMED, SHIPPED, DELIVERED
+        ORDER_CREATED, ORDER_CONFIRMED, ORDER_SHIPPED, ORDER_DELIVERED, PAYMENT_SUCCESS, PAYMENT_FAILED
     }
 }
