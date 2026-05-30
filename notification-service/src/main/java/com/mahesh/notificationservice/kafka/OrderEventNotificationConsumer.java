@@ -6,8 +6,11 @@ import com.mahesh.notificationservice.redis.IdempotencyService;
 import com.mahesh.notificationservice.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -22,6 +25,8 @@ public class OrderEventNotificationConsumer {
     @KafkaListener(topics = "order-event-topic", groupId = "notification-group")
     private void consumeOrderEvent(String kafkaRequest){
         try {
+            MDC.put("UUID", UUID.randomUUID().toString());
+
             EventRequest eventRequest = objectMapper.readValue(kafkaRequest, EventRequest.class);
 
             log.info("Order Notification Event received for orderId : {} | userId : {} | orderStatus : {}",
