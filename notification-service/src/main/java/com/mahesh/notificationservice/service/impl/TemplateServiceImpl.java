@@ -26,13 +26,13 @@ public class TemplateServiceImpl implements TemplateService {
     public String buildSubject(EventRequest eventRequest, NotificationDetails.Channel channel) {
         return notificationTemplateRepository
                 .findByNotificationTypeAndChannel(NotificationDetails.NotificationType.valueOf(eventRequest.getOrderStatus()), channel)
-                .map(NotificationTemplate::getSubject)
+                .map(template -> replacePlaceholders(template.getSubject(), eventRequest))
                 .orElse("Notification - " + eventRequest.getOrderStatus());
     }
 
     private String buildDefaultMessage(EventRequest eventRequest) {
         return String.format(
-                "Hi User %s, your order %s status is %s.",
+                "Hi %s, your order %s status is %s.",
                 eventRequest.getUserId(),
                 eventRequest.getOrderId(),
                 eventRequest.getOrderStatus()

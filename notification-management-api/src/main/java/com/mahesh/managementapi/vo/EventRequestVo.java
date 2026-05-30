@@ -1,5 +1,6 @@
 package com.mahesh.managementapi.vo;
 
+import com.mahesh.managementapi.model.NotificationDetails;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public class EventRequestVo {
     private String items;
     private Double amount;
 
-    private String orderStatus;
+    private NotificationDetails.NotificationType orderStatus;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
