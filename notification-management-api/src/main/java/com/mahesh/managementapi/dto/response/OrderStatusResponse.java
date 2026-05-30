@@ -12,5 +12,6 @@ public class OrderStatusResponse {
 
     private String statusCode;
     private String message;
+    private String requestUUID;
     private OrderVo orderDetails;
 }

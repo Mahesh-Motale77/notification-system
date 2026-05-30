@@ -12,6 +12,7 @@ import com.mahesh.managementapi.vo.OrderVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.protocol.types.Field;
+import org.slf4j.MDC;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +55,7 @@ public class OrderStatusServiceImpl implements OrderStatusService {
         return OrderStatusResponse.builder()
                 .statusCode("200")
                 .message("Status changed for orderId :"+orderStatusRequest.getOrderId())
+                .requestUUID(MDC.get("UUID"))
                 .orderDetails(OrderVo.builder()
                         .orderId(orderStatusRequest.getOrderId())
                         .oldStatus(oldStatus)

@@ -7,8 +7,10 @@ import com.mahesh.managementapi.model.NotificationDetails;
 import com.mahesh.managementapi.repository.NotificationDetailsRepository;
 import com.mahesh.managementapi.service.DLQService;
 import com.mahesh.managementapi.vo.EventRequestVo;
+import com.mahesh.managementapi.vo.NotificationDetailsVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,18 +27,24 @@ public class DLQServiceImpl implements DLQService {
     private final ObjectMapper objectMapper;
 
     @Override
-    public List<NotificationDetailsResponse> getAllDlqNotifications() {
+    public NotificationDetailsResponse getAllDlqNotifications() {
         log.info("Inside DLQServiceImpl --> getAllDlqNotifications()");
 
         List<NotificationDetails> notificationDetails = notificationDetailsRepository.findByNotificationStatus(DLQ);
 
-        return notificationDetails
+        List<NotificationDetailsVo> notificationDetailsVo = notificationDetails
                 .stream()
-                .map(this::mapToNotificationDetailResponse)
-                .collect(Collectors.toList());
+                .map(this::mapToNotificationDetailVo)
+                .toList();
+
+        return NotificationDetailsResponse.builder()
+                .statusCode("200")
+                .message(null)
+                .requestUUID(MDC.get("UUID"))
+                .build();
     }
 
-    private NotificationDetailsResponse mapToNotificationDetailResponse(NotificationDetails details) {
+    private NotificationDetailsVo mapToNotificationDetailVo(NotificationDetails details) {
         EventRequestVo payload;
         try {
             payload = objectMapper.readValue(details.getPayload(), EventRequestVo.class);
@@ -44,7 +52,7 @@ public class DLQServiceImpl implements DLQService {
             throw new RuntimeException(e);
         }
 
-        return NotificationDetailsResponse.builder()
+        return NotificationDetailsVo.builder()
                 .orderId(details.getOrderId())
                 .userId(details.getUserId())
                 .items(details.getItems())

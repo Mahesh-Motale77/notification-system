@@ -26,7 +26,7 @@ public class DLQContoller {
     private final DLQRetryService dlqRetryService;
 
     @GetMapping(value = "/v1/records", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<NotificationDetailsResponse>> getAllDlqNotifications(){
+    public ResponseEntity<NotificationDetailsResponse> getAllDlqNotifications(){
         log.info("Inside DLQContoller --> getAllDlqNotifications()");
         return ResponseEntity.ok(dlqService.getAllDlqNotifications());
     }

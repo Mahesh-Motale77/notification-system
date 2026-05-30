@@ -9,6 +9,7 @@ import com.mahesh.managementapi.repository.NotificationPreferencesRepository;
 import com.mahesh.managementapi.service.PreferencesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class PreferencesServiceImpl implements PreferencesService {
         return PreferencesResponse.builder()
                 .statusCode("200")
                 .message("User preference added for userId : " + preferenceRequest.getUserId())
+                .requestUUID(MDC.get("UUID"))
                 .Data(preferenceRequest)
                 .build();
     }
@@ -48,6 +50,7 @@ public class PreferencesServiceImpl implements PreferencesService {
         return PreferencesListResponse.builder()
                 .statusCode("200")
                 .message(null)
+                .requestUUID(MDC.get("UUID"))
                 .Data(preferences)
                 .build();
     }

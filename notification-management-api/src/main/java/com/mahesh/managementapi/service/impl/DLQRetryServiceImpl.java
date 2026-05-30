@@ -10,6 +10,7 @@ import com.mahesh.managementapi.vo.EventRequestVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.protocol.types.Field;
+import org.slf4j.MDC;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,7 @@ public class DLQRetryServiceImpl implements DLQRetryService {
             return DLQRetryResponse.builder()
                     .statusCode("200")
                     .errorMessage(null)
+                    .requestUUID(MDC.get("UUID"))
                     .message("Retry triggered successfully for orderId : " + orderId)
                     .build();
 

@@ -12,5 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 public class TemplateResponse {
     private String statusCode;
     private String message;
+    private String requestUUID;
     private TemplateRequest Data;
 }

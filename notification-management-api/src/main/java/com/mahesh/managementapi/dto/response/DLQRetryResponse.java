@@ -8,5 +8,6 @@ import lombok.Data;
 public class DLQRetryResponse {
     private String statusCode;
     private String errorMessage;
+    private String requestUUID;
     private String message;
 }

@@ -7,6 +7,7 @@ import com.mahesh.managementapi.repository.NotificationTemplateRepository;
 import com.mahesh.managementapi.service.TemplateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,6 +32,7 @@ public class TemplateServiceImpl implements TemplateService {
         return TemplateResponse.builder()
                 .statusCode("200")
                 .message("Template registered successfully!")
+                .requestUUID(MDC.get("UUID"))
                 .Data(templateRequest)
                 .build();
     }
@@ -49,6 +51,7 @@ public class TemplateServiceImpl implements TemplateService {
         return TemplateResponse.builder()
                 .statusCode("200")
                 .message(null)
+                .requestUUID(MDC.get("UUID"))
                 .Data(templateRequest)
                 .build();
     }

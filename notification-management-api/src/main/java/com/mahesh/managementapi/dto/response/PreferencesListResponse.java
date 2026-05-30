@@ -13,5 +13,6 @@ import java.util.List;
 public class PreferencesListResponse {
     private String statusCode;
     private String message;
+    private String requestUUID;
     private List<PreferenceRequest> Data;
 }
