@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mahesh.managementapi.dto.request.OrderStatusRequest;
 import com.mahesh.managementapi.dto.response.OrderStatusResponse;
+import com.mahesh.managementapi.exception.NotificationException;
 import com.mahesh.managementapi.model.NotificationDetails;
 import com.mahesh.managementapi.repository.NotificationDetailsRepository;
 import com.mahesh.managementapi.service.OrderStatusService;
@@ -11,7 +12,6 @@ import com.mahesh.managementapi.vo.EventRequestVo;
 import com.mahesh.managementapi.vo.OrderVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.protocol.types.Field;
 import org.slf4j.MDC;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
+import static com.mahesh.managementapi.exception.ErrorCodes.ORDER_NOT_FOUND;
 import static com.mahesh.managementapi.service.impl.DLQRetryServiceImpl.ORDER_TOPIC;
 
 @Service
@@ -35,7 +36,7 @@ public class OrderStatusServiceImpl implements OrderStatusService {
         log.info("Inside OrderStatusServiceImpl -> changeStatus() : OrderStatusRequest : {}",orderStatusRequest);
 
         NotificationDetails notificationDetails = notificationDetailsRepository.findByOrderId(orderStatusRequest.getOrderId())
-                .orElseThrow(()-> new RuntimeException("Order not found for orderId :"+ orderStatusRequest.getOrderId()));
+                .orElseThrow(()-> new NotificationException(ORDER_NOT_FOUND, "Order not found for orderId :"+ orderStatusRequest.getOrderId()));
 
         NotificationDetails.NotificationType oldStatus = notificationDetails.getNotificationType();
 

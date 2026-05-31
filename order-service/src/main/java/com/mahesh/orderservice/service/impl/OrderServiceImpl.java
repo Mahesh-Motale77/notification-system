@@ -1,6 +1,5 @@
 package com.mahesh.orderservice.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mahesh.orderservice.dto.request.OrderRequest;
 import com.mahesh.orderservice.dto.response.OrderResponse;
 import com.mahesh.orderservice.kafka.OrderEventPublisherService;
@@ -8,8 +7,6 @@ import com.mahesh.orderservice.model.Order;
 import com.mahesh.orderservice.repository.OrderRepository;
 import com.mahesh.orderservice.service.OrderService;
 import com.mahesh.orderservice.vo.OrderVo;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;

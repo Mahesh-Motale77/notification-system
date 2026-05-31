@@ -2,6 +2,7 @@ package com.mahesh.managementapi.service.impl;
 
 import com.mahesh.managementapi.dto.request.TemplateRequest;
 import com.mahesh.managementapi.dto.response.TemplateResponse;
+import com.mahesh.managementapi.exception.NotificationException;
 import com.mahesh.managementapi.model.NotificationTemplate;
 import com.mahesh.managementapi.repository.NotificationTemplateRepository;
 import com.mahesh.managementapi.service.TemplateService;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
+
+import static com.mahesh.managementapi.exception.ErrorCodes.TEMPLATE_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +46,7 @@ public class TemplateServiceImpl implements TemplateService {
 
         NotificationTemplate notificationTemplate = notificationTemplateRepository.findByNotificationTypeAndChannel(
                 templateRequest.getNotificationType(), templateRequest.getChannel()
-        ).orElseThrow(()-> new RuntimeException("Template for found for given channel and notification type"));
+        ).orElseThrow(()-> new NotificationException(TEMPLATE_NOT_FOUND,"Template for found for given channel and notification type"));
 
         templateRequest.setBodyTemplate(notificationTemplate.getBodyTemplate());
         templateRequest.setSubject(notificationTemplate.getSubject());

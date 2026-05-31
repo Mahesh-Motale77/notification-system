@@ -2,22 +2,22 @@ package com.mahesh.managementapi.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mahesh.managementapi.dto.response.DLQRetryResponse;
+import com.mahesh.managementapi.exception.NotificationException;
 import com.mahesh.managementapi.model.NotificationDetails;
 import com.mahesh.managementapi.repository.NotificationDetailsRepository;
 import com.mahesh.managementapi.service.DLQRetryService;
-import com.mahesh.managementapi.service.DLQService;
 import com.mahesh.managementapi.vo.EventRequestVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.protocol.types.Field;
 import org.slf4j.MDC;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
+
+import static com.mahesh.managementapi.exception.ErrorCodes.*;
 
 @Service
 @RequiredArgsConstructor
@@ -36,14 +36,14 @@ public class DLQRetryServiceImpl implements DLQRetryService {
         log.info("Inside DLQRetryServiceImpl --> retryDLQRecords() : orderId : {} ", orderId);
 
         NotificationDetails notificationDetails = notificationDetailsRepository.findByOrderId(orderId)
-                .orElseThrow(() -> new RuntimeException("Notification details not found !"));
+                .orElseThrow(() -> new NoSuchElementException("Notification details not found !"));
 
         if (!notificationDetails.getNotificationStatus().equals(NotificationDetails.NotificationStatus.DLQ)){
-            throw new RuntimeException("Notification is not in DLQ status. | Current status: " + notificationDetails.getNotificationStatus());
+            throw new NotificationException(INVALID_STATUS , "Notification is not in DLQ status. | Current status: " + notificationDetails.getNotificationStatus());
         }
 
         if (Objects.isNull(notificationDetails.getPayload())){
-            throw new RuntimeException("No payload found for notification: " + orderId);
+            throw new NotificationException(NO_PAYLOAD , "No payload found for notification: " + orderId);
         }
 
         try {
@@ -72,7 +72,7 @@ public class DLQRetryServiceImpl implements DLQRetryService {
 
         }catch (Exception e){
             log.error("DLQ retry failed | orderId : {} | error : {}", orderId, e.getMessage());
-            throw new RuntimeException("DLQ retry failed: " + e.getMessage());
+            throw new NotificationException(RETRY_FAILED, "DLQ retry failed: " + e.getMessage());
         }
     }
 }

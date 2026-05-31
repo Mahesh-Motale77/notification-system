@@ -3,6 +3,7 @@ package com.mahesh.managementapi.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mahesh.managementapi.dto.response.NotificationDetailsResponse;
+import com.mahesh.managementapi.exception.NotificationException;
 import com.mahesh.managementapi.model.NotificationDetails;
 import com.mahesh.managementapi.repository.NotificationDetailsRepository;
 import com.mahesh.managementapi.service.DLQService;
@@ -14,8 +15,8 @@ import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+import static com.mahesh.managementapi.exception.ErrorCodes.DLQ_NOT_FOUND;
 import static com.mahesh.managementapi.model.NotificationDetails.NotificationStatus.DLQ;
 
 @Service
@@ -31,6 +32,10 @@ public class DLQServiceImpl implements DLQService {
         log.info("Inside DLQServiceImpl --> getAllDlqNotifications()");
 
         List<NotificationDetails> notificationDetails = notificationDetailsRepository.findByNotificationStatus(DLQ);
+
+        if (notificationDetails.isEmpty()){
+            throw new NotificationException(DLQ_NOT_FOUND, "Notifications not found with DLQ status");
+        }
 
         List<NotificationDetailsVo> notificationDetailsVo = notificationDetails
                 .stream()
