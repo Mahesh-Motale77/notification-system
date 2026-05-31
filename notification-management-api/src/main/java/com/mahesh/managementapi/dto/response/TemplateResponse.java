@@ -4,7 +4,6 @@ import com.mahesh.managementapi.dto.request.TemplateRequest;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
 @Data
 @Builder

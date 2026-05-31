@@ -1,6 +1,5 @@
 package com.mahesh.orderservice.dto.response;
 
-import com.mahesh.orderservice.model.Order;
 import com.mahesh.orderservice.vo.OrderVo;
 import lombok.Builder;
 import lombok.Data;

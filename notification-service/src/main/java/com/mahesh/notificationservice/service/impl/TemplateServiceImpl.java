@@ -2,7 +2,6 @@ package com.mahesh.notificationservice.service.impl;
 
 import com.mahesh.notificationservice.dto.EventRequest;
 import com.mahesh.notificationservice.model.NotificationDetails;
-import com.mahesh.notificationservice.model.NotificationTemplate;
 import com.mahesh.notificationservice.repository.NotificationTemplateRepository;
 import com.mahesh.notificationservice.service.TemplateService;
 import lombok.RequiredArgsConstructor;

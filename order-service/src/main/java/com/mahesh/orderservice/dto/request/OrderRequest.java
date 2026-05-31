@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
-import org.apache.kafka.common.protocol.types.Field;
 
 @Data
 @Builder
